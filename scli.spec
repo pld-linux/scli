@@ -24,7 +24,7 @@ on the Simple Network Management Protocol (SNMP).
 
 %description -l pl
 scli jest narzêdziem s³u¿±cym do do monitorowania i konfiguracji
-urz±dzeñ sieciowych i systemów operacyjnych przy pomocy protokolu
+urz±dzeñ sieciowych i systemów operacyjnych przy pomocy protoko³u
 SNMP.
 
 %prep
