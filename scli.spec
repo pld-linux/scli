@@ -6,6 +6,7 @@ Release:	3
 License:	GPL v2+
 Group:		Applications/System
 Source0:	ftp://ftp.ibr.cs.tu-bs.de/local/scli/%{name}-%{version}.tar.gz
+# Source0-md5:	5e2e783d7e5f734f8588f23f215b3ff0
 Patch0:		%{name}.patch
 URL:		http://www.ibr.cs.tu-bs.de/projects/scli/
 BuildRequires:	autoconf
