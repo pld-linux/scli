@@ -12,6 +12,9 @@ Group(pl):	Aplikacje/System
 URL:		http://www.ibr.cs.tu-bs.de/projects/scli/
 Source0:	ftp://ftp.ibr.cs.tu-bs.de/local/scli/%{name}-%{version}.tar.gz
 #Patch: scli-%{version}-missing.patch
+BuildPrereq: 	glib >= 1.2 
+BuildPrereq: 	libxml2 >= 2.0
+BuildPrereq:	ncurses-devel >= 5.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
