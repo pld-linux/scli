@@ -2,7 +2,7 @@ Summary:	A collection of SNMP command line management tools
 Summary(pl):	Zestaw narzêdzi SNMP do monitorowania i zarz±dzania
 Name:		scli
 Version:	0.2.12
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		Applications/System
 Source0:	ftp://ftp.ibr.cs.tu-bs.de/local/scli/%{name}-%{version}.tar.gz
@@ -58,5 +58,5 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS NEWS README TODO
 %attr(755,root,root) %{_bindir}/*
-%{_infodir}/*
+%{_infodir}/scli.info*
 %{_mandir}/man1/*
