@@ -32,7 +32,11 @@ sieciowych i systemów operacyjnych przy pomocy protokolu SNMP.
 #%patch -p1
 
 %build
-./configure --prefix=%{_prefix}
+CPPFLAGS="-I%{_includedir}/ncurses"
+export CPPFLAGS
+
+./configure --prefix=/usr 
+
 if [ -x %{_bindir}/getconf ] ; then
     NRPROC=$(%{_bindir}/getconf _NPROCESSORS_ONLN)
     if [ $NRPROC -eq 0 ] ; then
