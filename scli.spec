@@ -8,6 +8,8 @@ Group:		Applications/System
 Source0:	ftp://ftp.ibr.cs.tu-bs.de/local/scli/%{name}-%{version}.tar.gz
 Patch0:		%{name}.patch
 URL:		http://www.ibr.cs.tu-bs.de/projects/scli/
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	glib-devel >= 1.2 
 BuildRequires:	libxml2-devel >= 2.0
 BuildRequires:	ncurses-devel >= 5.0
