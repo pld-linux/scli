@@ -11,7 +11,7 @@ Patch0:		%{name}.patch
 URL:		http://www.ibr.cs.tu-bs.de/projects/scli/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	glib-devel >= 1.2 
+BuildRequires:	glib-devel >= 1.2
 BuildRequires:	libxml2-devel >= 2.0
 BuildRequires:	ncurses-devel >= 5.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -27,7 +27,7 @@ urz±dzeñ sieciowych i systemów operacyjnych przy pomocy protokolu
 SNMP.
 
 %prep
-%setup -q 
+%setup -q
 %patch0 -p1
 
 %build
@@ -55,7 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 %postun
 [ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
 
-%files 
+%files
 %defattr(644,root,root,755)
 %doc AUTHORS NEWS README TODO
 %attr(755,root,root) %{_bindir}/*
