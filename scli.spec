@@ -1,12 +1,12 @@
 Summary:	A collection of SNMP command line management tools
 Summary(pl):	Zestaw narzêdzi SNMP do monitorowania i zarz±dzania
 Name:		scli
-Version:	0.2.3
-Release:	2
-License:	BSD-like
+Version:	0.2.11
+Release:	1
+License:	GPL v2
 Group:		Applications/System
 Source0:	ftp://ftp.ibr.cs.tu-bs.de/local/scli/%{name}-%{version}.tar.gz
-#Patch: scli-%{version}-missing.patch
+Patch0:		%{name}-ac_fixes.patch
 URL:		http://www.ibr.cs.tu-bs.de/projects/scli/
 BuildRequires:	glib-devel >= 1.2 
 BuildRequires:	libxml2-devel >= 2.0
@@ -25,34 +25,30 @@ SNMP.
 
 %prep
 %setup -q 
-#%patch -p1
+%patch0 -p1
 
 %build
+rm -f missing
+%{__aclocal}
+%{__autoconf}
+%{__automake}
 CPPFLAGS="-I%{_includedir}/ncurses"
 export CPPFLAGS
-
-./configure --prefix=%{_prefix}
-
+%configure
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
 
-# Adjust info,man paths to /usr/share as recommende by FHS
-install -d $RPM_BUILD_ROOT%{_infodir}
-mv -f $RPM_BUILD_ROOT%{_prefix}/info/* $RPM_BUILD_ROOT%{_infodir}
-mv -f $RPM_BUILD_ROOT%{_prefix}/man $RPM_BUILD_ROOT%{_mandir}
-
-gzip -9nf AUTHORS COPYING NEWS README TODO
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files 
 %defattr(644,root,root,755)
-%doc {AUTHORS,COPYING,NEWS,README,TODO}.gz
+%doc AUTHORS NEWS README TODO
 %attr(755,root,root) %{_bindir}/*
 %{_infodir}/*
 %{_mandir}/man1/*
