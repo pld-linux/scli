@@ -4,8 +4,8 @@ Name:		scli
 Version:	%{version}
 Release:	1
 Summary:	A collection of SNMP command line management tools
-Summary(pl):	Zestaw narzedzi SNMP do monitorowania i zarzadzania 
-License:	GPL
+Summary(pl):	Zestaw narzêdzi SNMP do monitorowania i zarz±dzania 
+License:	BSD-like
 Group:		Applications/System
 Group(de):	Applikationen/System
 Group(pl):	Aplikacje/System
@@ -21,9 +21,8 @@ on the Simple Network Management Protocol (SNMP).
 
 
 %description -l pl
-Pakiet scli zawiera poreczne narzedzia (dzialajace z linii polecen) sluzace 
-do monitorowania i konfiguracji urzadzen sieciowych i systemów operacyjnych
-przy pomocy protokolu SNMP. 
+scli jest narzêdziem s³u¿±cym do do monitorowania i konfiguracji urz±dzeñ
+sieciowych i systemów operacyjnych przy pomocy protokolu SNMP.
 
 %prep
 %setup -q 
@@ -48,8 +47,15 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 # Adjust info,man paths to /usr/share as recommende by Linux FSSTD
-install -d $RPM_BUILD_ROOT%{_datadir}/info
-mv $RPM_BUILD_ROOT%{_infodir}/* $RPM_BUILD_ROOT%{_datadir}/info
+mkdir -p $RPM_BUILD_ROOT/usr/share/info
+if [ ! $RPM_BUILD_ROOT/usr/info = $RPM_BUILD_ROOT/%{_infodir} ] 
+then mv $RPM_BUILD_ROOT/usr/info/* $RPM_BUILD_ROOT/%{_infodir}
+fi 
+
+if [ ! $RPM_BUILD_ROOT/usr/man = $RPM_BUILD_ROOT/%{_mandir} ] 
+then mv $RPM_BUILD_ROOT/usr/man $RPM_BUILD_ROOT/%{_mandir}
+fi
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -58,6 +64,6 @@ rm -rf $RPM_BUILD_ROOT
 %files 
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
-%doc %{_datadir}/info/*
+%doc %{_infodir}/*
 %doc %{_mandir}/man1/*
 %doc AUTHORS COPYING NEWS README TODO
