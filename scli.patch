@@ -1,0 +1,110 @@
+--- scli-0.2.12/scli/Makefile.am~	Fri Jul 19 13:16:31 2002
++++ scli-0.2.12/scli/Makefile.am	Tue Sep  3 01:35:54 2002
+@@ -11,7 +13,12 @@
+ 		  ospf.c printer.c \
+ 		  isdn.c rs232.c sonet.c \
+ 		  cisco.c nortel.c netsnmp.c 3com.c
+-scli_LDADD	= -L../proc -lproc -L../stub -lstub -L../snmp -lgsnmp $(GLIB_LIBS) $(XML_LIBS)
++
++scli_LDADD	= $(top_builddir)/proc/libproc.a \
++		  $(top_builddir)/stub/libstub.a \
++		  $(top_builddir)/snmp/libgsnmp.a \
++		  $(GLIB_LIBS) $(XML_LIBS)
++
+ #gscli_SOURCES	= gscli.c scli.h scli.1 vendors.c \
+ #		  getopt.h getopt.c getopt1.c basic.c monitor.c cmds.c \
+ #		  fmt.c xml.c \
+--- scli-0.2.12/doc/scli.texinfo~	Tue Sep  3 01:40:01 2002
++++ scli-0.2.12/doc/scli.texinfo	Tue Sep  3 01:40:01 2002
+@@ -9,6 +9,14 @@
+ @set VERSION 0.2.12
+ 
+ @ifinfo
++
++@format
++@dircategory Net utilities:
++@direntry
++* scli: (scli).				SNMP Command Line Interface
++@end direntry
++@end format
++
+ This file documents the @code{scli} SNMP command line interface.
+ 
+ Copyright (C) 2001-2002 J@"urgen Sch@"onw@"alder
+--- scli-0.2.12/configure.in~	Tue Sep  3 01:18:42 2002
++++ scli-0.2.12/configure.in	Tue Sep  3 01:44:10 2002
+@@ -7,8 +7,6 @@
+ dnl create a config.h file (Automake will add -DHAVE_CONFIG_H)
+ AM_CONFIG_HEADER(config.h)
+ 
+-AC_SUBST(VERSION)
+-
+ ISODATE=`date +%Y-%m-%d`
+ AC_SUBST(ISODATE)
+ 
+@@ -21,8 +19,8 @@
+ AC_CHECK_PROG(SMIDUMP, smidump, smidump)
+ AC_SUBST(SMIDUMP)
+ 
+-AC_DEFINE_UNQUOTED(SCLI_PLUGIN_PATH, "${exec_prefix}/lib/scli")
++AC_DEFINE_UNQUOTED(SCLI_PLUGIN_PATH, "${pkglibdir}")
+
+ AC_MSG_CHECKING([whether to enable -Wall])
+ AC_ARG_ENABLE(warnings,
+ [  --enable-warnings       Enable -Wall if using gcc.],
+@@ -34,15 +30,15 @@
+ 
+ dnl Checks for libraries.
+ 
+-AM_PATH_GLIB(1.2.0,,AC_MSG_ERROR(scli needs GLIB),gmodule)dnl
+-dnl AM_PATH_GTK(1.2.0,,AC_MSG_ERROR(scli needs GTK))dnl
+-AM_PATH_XML2(2.0.0,,AC_MSG_ERROR(scli needs libxml2))dnl
+-AC_CHECK_LIB(ncurses, initscr, , 
+-  AC_CHECK_LIB(curses, initscr, ,
++AM_PATH_GLIB(1.2.0, [], AC_MSG_ERROR(scli needs GLIB), gmodule)
++dnl AM_PATH_GTK(1.2.0, [], AC_MSG_ERROR(scli needs GTK))
++AM_PATH_XML2(2.0.0, [], AC_MSG_ERROR(scli needs libxml2))
++AC_CHECK_LIB(ncurses, initscr, [],
++  AC_CHECK_LIB(curses, initscr, [],
+     AC_MSG_ERROR([scli requires curses functions; install curses first])
+   )
+ )
+-AC_CHECK_LIB(readline, readline, ,
++AC_CHECK_LIB(readline, readline, [],
+   AC_MSG_ERROR([scli requires readline functions; install libreadline first])
+ )
+ 
+@@ -61,10 +58,7 @@
+ 
+ AC_CHECK_FUNC(gethostbyname, [], AC_CHECK_LIB(nsl, gethostbyname))
+ 
+-AC_CHECK_FUNC(connect)
+-if test $ac_cv_func_connect = no; then
+-  AC_CHECK_LIB(socket, connect)
+-fi
++AC_CHECK_FUNC(connect, [], AC_CHECK_LIB(socket, connect))
+ 
+ AC_CHECK_FUNCS(resizeterm getaddrinfo ether_ntohost)
+ AC_CHECK_FUNCS(rl_completion_matches)
+--- scli-0.2.12/ChangeLog~	Tue Sep  3 01:53:34 2002
++++ scli-0.2.12/ChangeLog	Tue Sep  3 01:53:34 2002
+@@ -10,7 +10,7 @@
+ 2002-08-30 20:54  schoenw
+ 
+ 	* configure.in: Patches to keep autoconf happy submitted by Tomasz
+-	Kloczek <kloczek@test2.zie.pg.gda.pl>.
++	Kloczko <kloczek@pld.org.pl>.
+ 
+ 2002-08-14 10:28  schoenw
+ 
+--- scli-0.2.12/AUTHORS~	Tue Sep  3 01:57:50 2002
++++ scli-0.2.12/AUTHORS	Tue Sep  3 01:57:50 2002
+@@ -11,7 +11,7 @@
+ - John Sellens <jsellens@generalconcepts.com>
+ - Urs Thuermann <thuerman@ibr.cs.tu-bs.de>
+ - Marcin Cieslak <saper@system.pl>
+-- Tomasz Kloczek <kloczek@test2.zie.pg.gda.pl>
++- Tomasz Kloczko <kloczek@pld.org.pl>
+ - Olivier Montanuy <olivier.montanuy@rd.francetelecom.com>
+ 
+ The SNMP engine was originally written by gxsnmp folks:
