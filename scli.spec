@@ -5,8 +5,6 @@ Version:	0.2.3
 Release:	2
 License:	BSD-like
 Group:		Applications/System
-Group(de):	Applikationen/System
-Group(pl):	Aplikacje/System
 Source0:	ftp://ftp.ibr.cs.tu-bs.de/local/scli/%{name}-%{version}.tar.gz
 #Patch: scli-%{version}-missing.patch
 URL:		http://www.ibr.cs.tu-bs.de/projects/scli/
