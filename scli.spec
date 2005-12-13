@@ -36,7 +36,7 @@ rm -f missing
 %{__aclocal}
 %{__autoconf}
 %{__automake}
-CPPFLAGS="-I%{_includedir}/ncurses `xml2-config --cflags`"
+CPPFLAGS="-I/usr/include/ncurses `xml2-config --cflags`"
 export CPPFLAGS
 %configure
 %{__make}
