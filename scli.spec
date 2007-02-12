@@ -1,5 +1,5 @@
 Summary:	A collection of SNMP command line management tools
-Summary(pl):	Zestaw narzêdzi SNMP do monitorowania i zarz±dzania
+Summary(pl.UTF-8):   Zestaw narzÄ™dzi SNMP do monitorowania i zarzÄ…dzania
 Name:		scli
 Version:	0.2.12
 Release:	4
@@ -22,9 +22,9 @@ The scli package contains small and efficient command line utilities
 to monitor and configure network devices and host systems. It is based
 on the Simple Network Management Protocol (SNMP).
 
-%description -l pl
-scli jest narzêdziem s³u¿±cym do do monitorowania i konfiguracji
-urz±dzeñ sieciowych i systemów operacyjnych przy pomocy protoko³u
+%description -l pl.UTF-8
+scli jest narzÄ™dziem sÅ‚uÅ¼Ä…cym do do monitorowania i konfiguracji
+urzÄ…dzeÅ„ sieciowych i systemÃ³w operacyjnych przy pomocy protokoÅ‚u
 SNMP.
 
 %prep
