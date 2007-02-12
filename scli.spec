@@ -1,5 +1,5 @@
 Summary:	A collection of SNMP command line management tools
-Summary(pl.UTF-8):   Zestaw narzędzi SNMP do monitorowania i zarządzania
+Summary(pl.UTF-8):	Zestaw narzędzi SNMP do monitorowania i zarządzania
 Name:		scli
 Version:	0.2.12
 Release:	4
