@@ -1,0 +1,227 @@
+Index: scli/basic.c
+===================================================================
+--- scli/basic.c
++++ scli/basic.c	2010-03-06 23:02:53.000000000 +0100
+@@ -934,7 +934,7 @@
+ 	    if (interp->peer) {
+ 		gchar *name = gnet_snmp_get_uri_string(interp->peer);
+ 		if (name) {
+-		    xml_set_prop(top, BAD_CAST("uri"), name ? name : "?");
++		    xml_set_prop(top, BAD_CAST("uri"), "%s", name ? name : "?");
+ 		    g_free(name);
+ 		}
+ 	    }
+Index: scli/cmds.c
+===================================================================
+--- scli/cmds.c
++++ scli/cmds.c	2010-03-06 23:04:53.000000000 +0100
+@@ -672,7 +672,7 @@
+ 
+     if (elem) {
+ 	g_free(alias->value);
+-	alias->value = g_strdup_printf(argv[2]);
++	alias->value = g_strdup_printf(argv[2], "%s");
+     } else {
+ 	alias = g_new0(scli_alias_t, 1);
+ 	alias->name = g_strdup(argv[1]);
+Index: scli/interface.c
+===================================================================
+--- scli/interface.c
++++ scli/interface.c	2010-03-06 23:07:22.000000000 +0100
+@@ -503,19 +503,19 @@
+     s = fmt_enum(snmpv2_tc_enums_TruthValue,
+ 		 ifXEntry ? ifXEntry->ifConnectorPresent : NULL);
+     if (s) {
+-	(void) xml_new_child(tree, NULL, BAD_CAST("connector"), s);
++	(void) xml_new_child(tree, NULL, BAD_CAST("connector"), "%s", s);
+     }
+ 
+     s = fmt_enum(snmpv2_tc_enums_TruthValue,
+ 		 ifXEntry ? ifXEntry->ifPromiscuousMode : NULL);
+     if (s) {
+-	(void) xml_new_child(tree, NULL, BAD_CAST("promiscuous"), s);
++	(void) xml_new_child(tree, NULL, BAD_CAST("promiscuous"), "%s", s);
+     }
+ 
+     s = fmt_enum(if_mib_enums_ifLinkUpDownTrapEnable,
+ 		 ifXEntry ? ifXEntry->ifLinkUpDownTrapEnable : NULL);
+     if (s) {
+-	(void) xml_new_child(tree, NULL, BAD_CAST("notifications"), s);
++	(void) xml_new_child(tree, NULL, BAD_CAST("notifications"), "%s", s);
+     }
+ 
+     if (ifEntry->ifLastChange && system && system->sysUpTime) {
+Index: scli/system.c
+===================================================================
+--- scli/system.c
++++ scli/system.c	2010-03-06 23:06:32.000000000 +0100
+@@ -405,7 +405,7 @@
+ 		     hrDeviceEntry->hrDeviceType,
+ 		     hrDeviceEntry->_hrDeviceDescrLength);
+     if (e) {
+-	(void) xml_new_child(tree, NULL, BAD_CAST("type"), e);
++	(void) xml_new_child(tree, NULL, BAD_CAST("type"), "%s",e);
+     }
+ 	
+     if (hrDeviceEntry->hrDeviceDescr && hrDeviceEntry->_hrDeviceDescrLength) {
+Index: scli/ip.c
+===================================================================
+--- scli/ip.c
++++ scli/ip.c	2010-03-06 23:10:30.000000000 +0100
+@@ -264,12 +264,12 @@
+ 
+     tree = xml_new_child(root, NULL, BAD_CAST("address"), NULL);
+     xml_set_prop(tree, BAD_CAST("address"),
+-		 fmt_ipv4_address(ipAddrEntry->ipAdEntAddr, SCLI_FMT_ADDR));
++		 fmt_ipv4_address(ipAddrEntry->ipAdEntAddr, SCLI_FMT_ADDR, "%s");
+     xml_set_prop(tree, BAD_CAST("type"), "ipv4");
+ 
+     if (ipAddrEntry->ipAdEntNetMask) {
+ 	xml_set_prop(tree, BAD_CAST("prefix"),
+-		     fmt_ipv4_mask(ipAddrEntry->ipAdEntNetMask));
++		     fmt_ipv4_mask(ipAddrEntry->ipAdEntNetMask, "%s"));
+     }
+ 
+     if (ipAddrEntry->ipAdEntIfIndex) {
+@@ -279,7 +279,7 @@
+ 
+     name = fmt_ipv4_address(ipAddrEntry->ipAdEntAddr, SCLI_FMT_NAME);
+     if (name) {
+-	(void) xml_new_child(tree, NULL, BAD_CAST("name"), name);
++	(void) xml_new_child(tree, NULL, BAD_CAST("name"), name, "%s");
+     }
+ }
+ 
+@@ -723,7 +723,7 @@
+ 
+     if (scli_interp_xml(interp)) {
+ 	xxx_ip_info(interp->result, interp->xml_node);
+-	g_printerr(interp->result->str);
++	g_printerr(interp->result->str, "%s");
+     }
+ 
+     if (ip) ip_mib_free_ip(ip);
+Index: scli/ip.c
+===================================================================
+--- scli/ip.c
++++ scli/ip.c	2010-03-06 23:13:19.000000000 +0100
+@@ -264,7 +264,7 @@
+ 
+     tree = xml_new_child(root, NULL, BAD_CAST("address"), NULL);
+     xml_set_prop(tree, BAD_CAST("address"),
+-		 fmt_ipv4_address(ipAddrEntry->ipAdEntAddr, SCLI_FMT_ADDR, "%s");
++		 fmt_ipv4_address(ipAddrEntry->ipAdEntAddr, SCLI_FMT_ADDR), "%s");
+     xml_set_prop(tree, BAD_CAST("type"), "ipv4");
+ 
+     if (ipAddrEntry->ipAdEntNetMask) {
+@@ -280,8 +280,8 @@
+     name = fmt_ipv4_address(ipAddrEntry->ipAdEntAddr, SCLI_FMT_NAME);
+     if (name) {
+ 	(void) xml_new_child(tree, NULL, BAD_CAST("name"), name, "%s");
+-    }
+-}
++    } ;
++} ;
+ 
+ 
+ 
+Index: scli/ip.c
+===================================================================
+--- scli/ip.c
++++ scli/ip.c	2010-03-06 23:16:21.000000000 +0100
+@@ -269,7 +269,7 @@
+ 
+     if (ipAddrEntry->ipAdEntNetMask) {
+ 	xml_set_prop(tree, BAD_CAST("prefix"),
+-		     fmt_ipv4_mask(ipAddrEntry->ipAdEntNetMask, "%s"));
++		     fmt_ipv4_mask(ipAddrEntry->ipAdEntNetMask), "%s");
+     }
+ 
+     if (ipAddrEntry->ipAdEntIfIndex) {
+Index: scli/nortel.c
+===================================================================
+--- scli/nortel.c
++++ scli/nortel.c	2010-03-06 23:18:41.000000000 +0100
+@@ -248,24 +248,24 @@
+ 
+     s = fmt_enum(rapid_city_enums_rcVlanType, vlanEntry->rcVlanType);
+     if (s) {
+-	node = xml_new_child(tree, NULL, BAD_CAST("type"), s);
++	node = xml_new_child(tree, NULL, BAD_CAST("type"), "%s", s);
+     }
+ 
+     s = fmt_enum(vlan_priority, vlanEntry->rcVlanHighPriority);
+     if (s) {
+-	node = xml_new_child(tree, NULL, BAD_CAST("priority"), s);
++	node = xml_new_child(tree, NULL, BAD_CAST("priority"), "%s", s);
+     }
+ 
+     s = fmt_enum(snmpv2_tc_enums_TruthValue,
+ 		 vlanEntry->rcVlanRoutingEnable);
+     if (s) {
+-	node = xml_new_child(tree, NULL, BAD_CAST("routing"), s);
++	node = xml_new_child(tree, NULL, BAD_CAST("routing"), "%s", s);
+     }
+ 
+     s = fmt_enum(snmpv2_tc_enums_RowStatus,
+ 		 vlanEntry->rcVlanRowStatus);
+     if (s) {
+-	node = xml_new_child(tree, NULL, BAD_CAST("status"), s);
++	node = xml_new_child(tree, NULL, BAD_CAST("status"), "%s", s);
+     }
+ 
+     if (vlanEntry->rcVlanType
+Index: scli/printer.c
+===================================================================
+--- scli/printer.c
++++ scli/printer.c	2010-03-06 23:21:45.000000000 +0100
+@@ -2967,7 +2967,7 @@
+     e = fmt_enum(iana_printer_mib_enums_PrtConsoleColorTC,
+ 		 lightEntry->prtConsoleColor);
+     if (e) {
+-	xml_new_child(tree, NULL, BAD_CAST("color"), e);
++	xml_new_child(tree, NULL, BAD_CAST("color"), "%s", e);
+     }
+ 
+     if (*lightEntry->prtConsoleOnTime
+@@ -2980,7 +2980,7 @@
+ 	       && *lightEntry->prtConsoleOffTime) {
+ 	state = "blink";
+     }
+-    xml_new_child(tree, NULL, BAD_CAST("status"), state);
++    xml_new_child(tree, NULL, BAD_CAST("status"), state, "%s");
+ }
+ 
+ 
+@@ -3172,19 +3172,19 @@
+ 
+     if (alertEntry->prtAlertTime) {
+ 	xml_new_child(tree, NULL, BAD_CAST("date"),
+-		      xml_timeticks(*alertEntry->prtAlertTime));
++		      xml_timeticks(*alertEntry->prtAlertTime), "%s");
+     }
+ 
+     e = fmt_enum(iana_printer_mib_enums_PrtAlertCodeTC,
+ 		 alertEntry->prtAlertCode);
+     if (e) {
+-	xml_new_child(tree, NULL, BAD_CAST("code"), e);
++	xml_new_child(tree, NULL, BAD_CAST("code"), "%s", e);
+     }
+ 
+     e = fmt_enum(printer_mib_enums_PrtAlertSeverityLevelTC,
+ 		 alertEntry->prtAlertSeverityLevel);
+     if (e) {
+-	xml_new_child(tree, NULL, BAD_CAST("severity"), e);
++	xml_new_child(tree, NULL, BAD_CAST("severity"), "%s", e);
+     }
+ 
+     if (alertEntry->prtAlertDescription) {
+@@ -3204,7 +3204,7 @@
+ 	    && *alertEntry->prtAlertLocation > 0) {
+ 	    g_string_sprintfa(s, " (at location %u)", *alertEntry->prtAlertLocation);
+ 	}
+-	xml_new_child(tree, NULL, BAD_CAST("location"), s->str);
++	xml_new_child(tree, NULL, BAD_CAST("location"), s->str, "%s");
+ 	g_string_free(s, 1);
+     }
+ 

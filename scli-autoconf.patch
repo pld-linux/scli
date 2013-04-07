@@ -1,0 +1,11 @@
+--- scli-0.4.0/configure.in.org	2013-04-07 11:13:48.000000000 +0200
++++ scli-0.4.0/configure.in	2013-04-07 11:14:30.000000000 +0200
+@@ -6,7 +6,7 @@
+ AM_INIT_AUTOMAKE([-Wall])
+ 
+ dnl create a config.h file (Automake will add -DHAVE_CONFIG_H)
+-AM_CONFIG_HEADER(config.h)
++AC_CONFIG_HEADERS([config.h])
+ 
+ ISODATE=`date +%Y-%m-%d`
+ AC_SUBST(ISODATE)
